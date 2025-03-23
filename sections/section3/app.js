@@ -17,16 +17,16 @@ const server = http.createServer((req, res) =>{ // Creating an HTTP server
         req.on('data', (chunk) => {
             console.log(chunk);
             body.push(chunk);
-        });
+        }); 
+        // This is wrong according to Max
         req.on('end', () =>{
             const parsedBody = Buffer.concat(body).toString();
             const message = parsedBody.split('=')[1];
             fs.writeFileSync('message.txt', message);
+            res.statusCode = 302;
+            res.setHeader('Location', '/');
+            return res.end();
         });
-        fs.writeFileSync('message.txt', 'DUMMY');
-        res.statusCode = 302;
-        res.setHeader('Location', '/');
-        return res.end();
     }
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
