@@ -1,7 +1,15 @@
 const http = require('http'); // Importing the built-in 'http' module
 
 const server = http.createServer((req, res) =>{ // Creating an HTTP server
-    console.log(req.url, req.method, req.headers); // Log the incoming request object to the console
+    const url = req.url;
+    if (url === '/') {
+        res.setHeader('Content-Type', 'text/html');
+        res.write('<html>');
+        res.write('<head><title>Enter Message</title></head>');
+        res.write('<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></button></form></body>');
+        res.write('</html>');
+        return res.end();
+    }
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
     res.write('<head><title>My First Page</title></head>');
